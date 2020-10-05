@@ -1,0 +1,6 @@
+easy_admin:
+    entities:
+        Produits:
+            class: App\Entity\Produits
+        User:
+            class: App\Entity\User

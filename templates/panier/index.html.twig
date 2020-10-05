@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+{% block main %}
+<section class="cart_area section_padding">
+  <div class="container">
+   <div class="cart_inner">
+    <div class="table-responsive">
+     <div>
+      <h1>Votre panier</h1>
+      </div>
+        {% if (items|length) > 0 %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>
+                  Produit
+                </th>
+                <th>
+                  Image
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Prix
+                </th>
+                <th>
+                  Quantité
+                </th>
+                <th>
+                  Total
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in items %}
+                {% if item.produits is not null %}
+                  <tr>
+                    <td>
+                      {{ item.produits.nom }}
+                    </td>
+                    <td>
+                      <img class="imgpanier" src="{{asset('img/')}}{{item.produits.image}}"/>
+                    </td>
+                    <td>
+                      {{ item.produits.description }}
+                    </td>
+                    <td>
+                      {{ item.produits.prix }}
+                    </td>
+                    <td>
+                      {{ item.quantity }}
+                    </td>
+                    <td>
+                      {{ item.produits.prix * item.quantity }}
+                    </td>
+                    <td>
+                      <a class="btn btn-info btn-lg" href="{{
+                      path(
+                      'panier_subtract',
+                      {
+                      id: item.produits.id
+                    }
+                    )
+                  }}"
+                  class="btn">
+                  -                </a>
+                </td>
+                <td>
+                  <a href="{{
+                  path(
+                  'panier_remove',
+                  {
+                  id: item.produits.id
+                }
+                )
+              }}"
+              class="btn btn-danger btn-sm">
+              <i class="fas fa-trash"></i>
+            </a>
+          </td>
+
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="5">
+        Total :
+      </td>
+      <td>
+        {{ totalPrice }}
+      </td>
+
+    </tr>
+  </tfoot>
+</table>
+<div>
+  <a href="{{ path('command') }}" class="btn btn-outline-success">Commandez</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+{% else %}
+  <p class="btn btn-info">
+    Votre panier est vide !
+  </p>
+{% endif %}
+{% endblock %}

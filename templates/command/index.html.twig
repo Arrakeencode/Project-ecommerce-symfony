@@ -1,0 +1,111 @@
+{% extends "base.html.twig" %}
+
+{% block main %}
+
+    <div>
+        <h1>Valider votre commande</h1>
+    </div>
+    {% block message %}
+            {% for error in app.flashes('error') %}
+                <div class="danger alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endfor %}
+    {% endblock %}
+    
+    
+    
+    
+{% if items| length > 0 %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    {% if  item.produits is not null %}
+                        <tr>
+                            <td>{{ item.produits.nom }}</td>
+                            <td>{{ item.produits.prix }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.produits.prix * item.quantity }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">Total : </td>
+                    <td>{{ totalPrice }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <form method="post" action="{{ path('paiement') }}">
+            <h2>Votre adresse de livraison</h2>
+            <div class="form-group col-5">
+                    <label for="prenom_user">Veuillez entrez votre prénom</label>
+                    <input type="text" id="prenom_user" name="prenom_user" class="form-control" placeholder="Jean" value="" required >
+                </div>
+                <div class="form-group col-5">
+                    <label for="nom_user">Veuillez entrez votre Nom</label>
+                    <input type="text" id="nom_user" name="nom_user" class="form-control" placeholder="Dupont" value="" required>
+                </div>
+                <div class="form-group col-5">
+                    <label for="email">Veuillez entrez votre email</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="" value="" required>
+                </div>            
+            <div class="form-row">
+                <div class="form-group col-4">
+                    <label for="adresse">Veuillez saisir votre adresse</label>
+                    <input type="text" id="adresse" name="adresse" class="form-control" placeholder="37 rue du projet" value="" required>
+                </div>
+                <div class="form-group col-4">
+                    <label for="code">le code postal</label>
+                    <input type="number" id="code" name="code" class="form-control" placeholder="75098" value="" required>
+                </div>
+                <div class="form-group col-4">
+                    <label for="ville">La Ville</label>
+                    <input type="text" id="ville" name="ville" class="form-control" placeholder="Paris" value="" required>
+                </div>
+            </div>
+            <h2>Vos informations de paiement</h2>
+            <div class="form-group col-5">
+                    <label for="nom_card">Ici, nom et prénom inscrits sur votre carte de paiement</label>
+                    <input type="text" id="nom_card" name="nom_card" placeholder="Jean Caisse" class="form-control" value="" required>
+            </div>
+            <div class="form-group col-5">
+                    <label for="num_card">Numéro de carte</label>
+                    <input type="" id="num_card" name="num_card" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX" value="" required>
+            </div>
+            <div class="form-group col-5">
+                    <label for="date_card">Date d'expiration</label>
+                    <input type="month" id="date_card" name="date_card" class="form-control" placeholder="Jour/Mois" value="" required>
+            </div>
+            <div class="form-group col-5">
+                    <label for="code_card">Cryptogramme à 3 chiffres</label>
+                    <input type="number" id="code_card" name="code_card" class="form-control" placeholder="XXX" value="" required>
+            </div>
+            {% if app.user %}
+            <div class="mx-auto text-center">
+                    <input type="submit" value="Valider et Payer !" class="btn btn-primary d-inline-block">
+            </div>
+            {% else %}
+            <div class="mx-auto text-center">
+                    <p><a href="{{ path('fos_user_security_login') }}" class="btn btn-danger d-inline-block">Merci de vous connecter pour passez au paiement</p>
+            </div>
+            {% endif %}
+        </form>
+    {% else %}
+        <p>Vous n'avez aucune commande</p>
+    {% endif %}
+
+{% endblock %}
+
+
